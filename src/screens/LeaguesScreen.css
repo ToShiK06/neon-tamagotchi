@@ -1,0 +1,306 @@
+.leagues-screen { padding: 16px 20px 100px; gap: 14px; }
+
+.leagues-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.leagues-topbar .title-glow { font-size: 20px; }
+
+/* ==== Пояснение ==== */
+.league-intro {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(79, 195, 247, 0.1);
+  border: 1px solid rgba(79, 195, 247, 0.3);
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-dim);
+  letter-spacing: 0.3px;
+}
+
+.league-intro-icon { font-size: 18px; flex-shrink: 0; }
+.league-intro-text strong { color: #fff; }
+
+/* ==== Баннер ==== */
+.league-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 18px;
+  background: linear-gradient(160deg, rgba(106, 27, 154, 0.55), rgba(43, 15, 76, 0.95));
+  border: 2px solid;
+  border-radius: var(--radius-lg);
+}
+
+.league-badge {
+  font-size: 56px;
+  animation: floatBadge 3s ease-in-out infinite;
+}
+
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%      { transform: translateY(-8px) rotate(3deg); }
+}
+
+.league-name {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.league-points-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.league-points-label { color: var(--text-dim); }
+.league-points-value { color: #fff; font-weight: 900; font-size: 16px; }
+
+.league-progress-wrap {
+  width: 100%;
+  height: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-top: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.league-progress-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.league-next {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.league-next strong { color: #fff; }
+
+.league-max {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #FFE082;
+  text-shadow: 0 0 15px rgba(255, 224, 130, 0.7);
+}
+
+/* ==== Карточка награды ==== */
+.league-reward-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  transition: all 0.3s;
+}
+
+.league-reward-card.available {
+  background: linear-gradient(135deg, rgba(255, 224, 130, 0.15), rgba(255, 159, 67, 0.1));
+  border: 2px solid rgba(255, 224, 130, 0.6);
+  box-shadow: 0 0 25px rgba(255, 224, 130, 0.3);
+  animation: rewardPulse 2s ease-in-out infinite;
+}
+
+@keyframes rewardPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 224, 130, 0.25); }
+  50%      { box-shadow: 0 0 35px rgba(255, 224, 130, 0.55); }
+}
+
+.league-reward-card.cooldown {
+  background: rgba(43, 15, 76, 0.5);
+  border: 2px solid rgba(156, 77, 204, 0.3);
+  opacity: 0.75;
+}
+
+.league-reward-left {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.league-reward-label {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.league-reward-sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.league-reward-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.league-reward-amount {
+  font-size: 18px;
+  font-weight: 900;
+  color: #FFE082;
+  text-shadow: 0 0 15px rgba(255, 224, 130, 0.7);
+}
+
+.league-reward-btn {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #FFE082, #FF9F43);
+  color: #2B0F4C;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.league-reward-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 224, 130, 0.7);
+}
+
+.league-reward-btn.cooldown,
+.league-reward-btn:disabled {
+  background: rgba(100, 100, 100, 0.4);
+  color: rgba(255, 255, 255, 0.4);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ==== Лидерборд ==== */
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.leaderboard-header {
+  display: grid;
+  grid-template-columns: 32px 32px 1fr 80px;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.lb-col-score {
+  text-align: right;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 32px 32px 1fr 80px;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: rgba(43, 15, 76, 0.6);
+  border: 1px solid rgba(156, 77, 204, 0.3);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+}
+
+.leaderboard-row.rank-1 { border-color: #FFE082; background: linear-gradient(90deg, rgba(255, 224, 130, 0.15), rgba(43, 15, 76, 0.6)); }
+.leaderboard-row.rank-2 { border-color: #C0C0C0; }
+.leaderboard-row.rank-3 { border-color: #CD7F32; }
+
+.leaderboard-row.is-player {
+  border: 2px dashed rgba(79, 195, 247, 0.7);
+  background: linear-gradient(90deg, rgba(79, 195, 247, 0.15), rgba(43, 15, 76, 0.8));
+  animation: playerRowGlow 2s ease-in-out infinite;
+}
+
+@keyframes playerRowGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(79, 195, 247, 0.3); }
+  50%      { box-shadow: 0 0 25px rgba(79, 195, 247, 0.6); }
+}
+
+.lb-rank {
+  font-weight: 900;
+  font-size: 16px;
+  color: #FFE082;
+  text-align: center;
+}
+
+.lb-emoji {
+  font-size: 22px;
+  text-align: center;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4));
+}
+
+.lb-name {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.you-badge {
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  padding: 2px 6px;
+  background: var(--cyan);
+  color: #1A0B2E;
+  border-radius: 100px;
+}
+
+.lb-score {
+  font-size: 12px;
+  color: var(--cyan);
+  font-weight: 800;
+  text-align: right;
+}
+
+/* ==== Футер ==== */
+.league-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(156, 77, 204, 0.3);
+  border-radius: var(--radius-md);
+  text-align: center;
+  margin-top: 6px;
+}
+
+.league-footer-title {
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #fff;
+}
+
+.league-footer-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}

@@ -1,0 +1,31 @@
+.dmg-popup {
+  position: absolute;
+  font-size: 22px;
+  font-weight: 900;
+  pointer-events: none;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8), 0 0 12px currentColor;
+  animation: dmgFloat 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  z-index: 50;
+  transform: translate(-50%, -50%);
+}
+
+.dmg-popup.ally  { color: #FF6B6B; }
+.dmg-popup.enemy { color: #76FF03; }
+.dmg-popup.crit {
+  font-size: 32px;
+  animation: dmgCrit 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes dmgFloat {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+  20%  { opacity: 1; transform: translate(-50%, -70%) scale(1.2); }
+  80%  { opacity: 1; transform: translate(-50%, -140%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -180%) scale(0.9); }
+}
+
+@keyframes dmgCrit {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.5) rotate(-15deg); }
+  25%  { opacity: 1; transform: translate(-50%, -80%) scale(1.6) rotate(5deg); }
+  75%  { opacity: 1; transform: translate(-50%, -160%) scale(1.3) rotate(-3deg); }
+  100% { opacity: 0; transform: translate(-50%, -220%) scale(1); }
+}

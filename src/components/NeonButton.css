@@ -1,0 +1,54 @@
+.neon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: var(--radius-md);
+  transition: transform 0.15s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.neon-btn:active:not(:disabled) { transform: scale(0.96); }
+
+.neon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
+.neon-btn-primary {
+  background: linear-gradient(135deg, #FF9F43 0%, #FF6B6B 100%);
+  color: #2B0F4C;
+  box-shadow: 0 6px 0 #B14B2A, 0 0 25px rgba(255, 107, 107, 0.5);
+}
+.neon-btn-primary:hover:not(:disabled) { filter: brightness(1.1); }
+.neon-btn-primary:active:not(:disabled) {
+  transform: translateY(4px) scale(0.97);
+  box-shadow: 0 2px 0 #B14B2A, 0 0 25px rgba(255, 107, 107, 0.5);
+}
+
+.neon-btn-secondary {
+  background: rgba(106, 27, 154, 0.6);
+  color: #fff;
+  border: 2px solid rgba(156, 77, 204, 0.8);
+  box-shadow: 0 0 20px rgba(156, 77, 204, 0.4);
+  backdrop-filter: blur(8px);
+}
+.neon-btn-secondary:hover:not(:disabled) { background: rgba(106, 27, 154, 0.85); }
+
+.neon-btn-danger {
+  background: linear-gradient(135deg, #B14B2A 0%, #6B1E1E 100%);
+  color: #fff;
+  box-shadow: 0 6px 0 #4A1010, 0 0 25px rgba(255, 60, 60, 0.4);
+}
+
+.neon-btn-sm { padding: 8px 16px;  font-size: 12px; border-radius: var(--radius-sm); }
+.neon-btn-md { padding: 14px 24px; font-size: 14px; }
+.neon-btn-lg { padding: 18px 32px; font-size: 16px; border-radius: var(--radius-lg); }
+
+.neon-btn-full { width: 100%; }
+.neon-btn-icon { font-size: 1.2em; }

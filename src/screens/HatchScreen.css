@@ -1,0 +1,250 @@
+.hatch-screen {
+  padding: 16px 20px 40px;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hatch-topbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hatch-topbar .title-glow { font-size: 18px; }
+
+/* ==== Сцена ==== */
+.hatch-stage {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 360px;
+}
+
+/* ==== Фаза 1: яйцо трескается ==== */
+.hatch-egg-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.hatch-egg {
+  position: relative;
+  width: 180px;
+  height: 230px;
+  background: radial-gradient(ellipse at 35% 30%, #9C4DCC 0%, #6A1B9A 60%, #4A0E6B 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation: hatchShake 0.25s ease-in-out infinite;
+}
+
+@keyframes hatchShake {
+  0%, 100% { transform: rotate(-3deg) scale(1); }
+  50%      { transform: rotate(3deg) scale(1.02); }
+}
+
+.hatch-crack {
+  position: absolute;
+  background: #1A0B2E;
+  border-radius: 2px;
+}
+
+.hatch-crack.c1 {
+  top: 20%;
+  left: 45%;
+  width: 3px;
+  height: 40px;
+  transform: rotate(15deg);
+  animation: crackGrow 1.8s ease-out forwards;
+}
+
+.hatch-crack.c2 {
+  top: 45%;
+  left: 40%;
+  width: 3px;
+  height: 30px;
+  transform: rotate(-25deg);
+  animation: crackGrow 1.8s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+.hatch-crack.c3 {
+  top: 55%;
+  left: 55%;
+  width: 3px;
+  height: 50px;
+  transform: rotate(20deg);
+  animation: crackGrow 1.8s ease-out 0.6s forwards;
+  opacity: 0;
+}
+
+@keyframes crackGrow {
+  0%   { opacity: 0; height: 0; }
+  50%  { opacity: 1; height: 100%; }
+  100% { opacity: 1; }
+}
+
+.hatch-particles {
+  position: absolute;
+  inset: -40px;
+  pointer-events: none;
+}
+
+.hp {
+  position: absolute;
+  font-size: 24px;
+  filter: drop-shadow(0 0 10px rgba(255, 224, 130, 0.9));
+  animation: particleFloat 1.5s ease-out infinite;
+}
+
+.hp.hp1 { top: 10%; left: 10%; animation-delay: 0s; }
+.hp.hp2 { top: 30%; right: 10%; animation-delay: 0.4s; }
+.hp.hp3 { bottom: 20%; left: 15%; animation-delay: 0.8s; }
+.hp.hp4 { bottom: 10%; right: 15%; animation-delay: 0.6s; }
+
+@keyframes particleFloat {
+  0%   { opacity: 0; transform: translateY(0)     scale(0.5); }
+  50%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-50px) scale(1.4); }
+}
+
+.hatch-text {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #FFE082;
+  text-shadow: 0 0 15px rgba(255, 224, 130, 0.7);
+  animation: textPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+
+/* ==== Фаза 2 и 3: показ питомца ==== */
+.hatch-reveal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: revealPop 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes revealPop {
+  0%   { transform: scale(0.3); opacity: 0; filter: blur(20px); }
+  100% { transform: scale(1);   opacity: 1; filter: blur(0); }
+}
+
+.hatch-reveal-glow {
+  position: absolute;
+  inset: -50%;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: glowBreath 2.5s ease-in-out infinite;
+}
+
+@keyframes glowBreath {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.15); }
+}
+
+.hatch-text-reveal {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+  text-align: center;
+  animation: textPulse 2s ease-in-out infinite;
+}
+
+/* ==== Форма имени ==== */
+.hatch-form {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: formSlideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes formSlideIn {
+  from { transform: translateY(30px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.hatch-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.hatch-input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(43, 15, 76, 0.8);
+  border: 2px solid rgba(156, 77, 204, 0.7);
+  border-radius: var(--radius-md);
+  outline: none;
+  text-align: center;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.hatch-input::placeholder {
+  color: rgba(201, 184, 224, 0.5);
+  font-weight: 500;
+}
+
+.hatch-input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 25px rgba(79, 195, 247, 0.5), inset 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.hatch-species {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.hatch-species-label {
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.hatch-species-name {
+  color: #FFE082;
+  font-weight: 800;
+}
+
+.hatch-loading {
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.hatch-loading-text {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  animation: textPulse 1.5s ease-in-out infinite;
+}

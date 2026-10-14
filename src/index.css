@@ -1,13 +1,59 @@
-body {
+/* ============================================
+   ГЛОБАЛЬНАЯ ТЕМА — Dark Neon Tamagotchi
+   ============================================ */
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+  background: linear-gradient(180deg, #2B0F4C 0%, #1A0B2E 100%);
+  background-attachment: fixed;
+  color: #fff;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
+}
+
+:root {
+  --bg-dark-1: #2B0F4C;
+  --bg-dark-2: #1A0B2E;
+  --purple: #6A1B9A;
+  --purple-light: #9C4DCC;
+  --orange: #FF9F43;
+  --coral: #FF6B6B;
+  --cyan: #4FC3F7;
+  --neon-green: #76FF03;
+  --pink: #FF80AB;
+  --text: #FFFFFF;
+  --text-dim: #C9B8E0;
+  --button-text: #2B0F4C;
+  --glow-cyan: 0 0 20px rgba(79, 195, 247, 0.6);
+  --glow-orange: 0 0 20px rgba(255, 159, 67, 0.6);
+  --glow-green: 0 0 20px rgba(118, 255, 3, 0.6);
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+::-webkit-scrollbar-thumb { background: var(--purple-light); border-radius: 3px; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  touch-action: manipulation;
 }

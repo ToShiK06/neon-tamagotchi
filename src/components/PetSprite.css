@@ -1,0 +1,136 @@
+.pet-sprite-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.pet-sprite-aura {
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: auraBreath 3s ease-in-out infinite;
+}
+
+@keyframes auraBreath {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.1); }
+}
+
+.pet-sprite-svg {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+  animation: spriteFloat 3.5s ease-in-out infinite;
+  overflow: visible;   /* ← важно */
+}
+
+@keyframes spriteFloat {
+  0%, 100% { transform: translateY(0)    rotate(-1.5deg); }
+  50%      { transform: translateY(-6px) rotate(1.5deg);  }
+}
+
+/* ==== Спецэффекты для скинов ==== */
+.skin-neon .pet-sprite-svg {
+  filter: drop-shadow(0 0 15px rgba(118, 255, 3, 0.8)) drop-shadow(0 0 30px rgba(118, 255, 3, 0.5));
+  animation: spriteFloat 3.5s ease-in-out infinite, neonPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+  0%, 100% { filter: drop-shadow(0 0 15px rgba(118, 255, 3, 0.8)) drop-shadow(0 0 30px rgba(118, 255, 3, 0.5)); }
+  50%      { filter: drop-shadow(0 0 25px rgba(118, 255, 3, 1))   drop-shadow(0 0 50px rgba(118, 255, 3, 0.8)); }
+}
+
+.skin-gold .pet-sprite-svg {
+  filter: drop-shadow(0 0 15px rgba(255, 224, 130, 0.9)) drop-shadow(0 0 30px rgba(255, 179, 0, 0.6));
+}
+
+.skin-cosmic .pet-sprite-svg {
+  filter: drop-shadow(0 0 20px rgba(179, 157, 219, 0.9)) drop-shadow(0 0 40px rgba(126, 87, 194, 0.6));
+}
+
+.skin-shadow .pet-sprite-svg {
+  filter: drop-shadow(0 0 20px rgba(74, 20, 140, 0.9)) drop-shadow(0 0 40px rgba(156, 77, 204, 0.5));
+}
+
+.skin-rainbow .pet-sprite-svg {
+  animation: spriteFloat 3.5s ease-in-out infinite, rainbowGlow 3s linear infinite;
+}
+
+@keyframes rainbowGlow {
+  0%   { filter: drop-shadow(0 0 15px #FF6B6B) drop-shadow(0 0 30px #FF6B6B); }
+  33%  { filter: drop-shadow(0 0 15px #76FF03) drop-shadow(0 0 30px #76FF03); }
+  66%  { filter: drop-shadow(0 0 15px #4FC3F7) drop-shadow(0 0 30px #4FC3F7); }
+  100% { filter: drop-shadow(0 0 15px #FF6B6B) drop-shadow(0 0 30px #FF6B6B); }
+}
+
+/* ==== Настроения ==== */
+.pet-sprite-wrap.mood-eating .pet-sprite-svg {
+  animation: spriteEating 0.4s ease-in-out infinite;
+}
+
+@keyframes spriteEating {
+  0%, 100% { transform: scale(1)    rotate(-3deg); }
+  50%      { transform: scale(1.08) rotate(3deg);  }
+}
+
+.pet-sprite-wrap.mood-happy .pet-sprite-svg {
+  animation: spriteHappy 0.6s ease-in-out infinite;
+}
+
+@keyframes spriteHappy {
+  0%, 100% { transform: translateY(0)     scale(1); }
+  50%      { transform: translateY(-12px) scale(1.1); }
+}
+
+.pet-sprite-wrap.mood-sleepy .pet-sprite-svg {
+  animation: spriteSleepy 4s ease-in-out infinite;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5)) brightness(0.75);
+}
+
+@keyframes spriteSleepy {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50%      { transform: translateY(4px) rotate(-2deg); }
+}
+
+.pet-sprite-wrap.mood-attack .pet-sprite-svg {
+  animation: spriteAttack 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes spriteAttack {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.2) translateY(-8px); }
+  100% { transform: scale(1); }
+}
+
+.pet-sprite-wrap.mood-hit .pet-sprite-svg {
+  animation: spriteHit 0.3s ease-out;
+}
+
+@keyframes spriteHit {
+  0%   { transform: translateX(0);     filter: drop-shadow(0 0 10px #FF0000); }
+  50%  { transform: translateX(-6px);  filter: drop-shadow(0 0 20px #FF0000) brightness(1.5); }
+  100% { transform: translateX(0);     filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5)); }
+}
+
+.pet-sprite-wrap.mood-victory .pet-sprite-svg {
+  animation: spriteVictory 0.7s ease-out infinite;
+}
+
+@keyframes spriteVictory {
+  0%, 100% { transform: translateY(0)     rotate(-3deg); }
+  50%      { transform: translateY(-14px) rotate(3deg);  }
+}
+
+.pet-sprite-wrap.mood-defeated .pet-sprite-svg {
+  animation: spriteDefeated 0.8s ease-out forwards;
+  filter: grayscale(1) brightness(0.4);
+}
+
+@keyframes spriteDefeated {
+  0%   { transform: rotate(0)       translateY(0);     opacity: 1; }
+  100% { transform: rotate(90deg)   translateY(20px);  opacity: 0.3; }
+}

@@ -1,0 +1,159 @@
+/* ============================================
+   Компонент Egg — 3D-яйцо тамагочи
+   ============================================ */
+
+.egg-scene {
+  position: relative;
+  width: 260px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* ==== Размеры ==== */
+.egg-sm { width: 160px; height: 200px; }
+.egg-sm .egg-3d { width: 100px; height: 130px; }
+.egg-sm .egg-aura { width: 180px; height: 180px; }
+
+.egg-md { width: 260px; height: 320px; }
+.egg-md .egg-3d { width: 160px; height: 210px; }
+.egg-md .egg-aura { width: 300px; height: 300px; }
+
+.egg-lg { width: 340px; height: 420px; }
+.egg-lg .egg-3d { width: 210px; height: 275px; }
+.egg-lg .egg-aura { width: 380px; height: 380px; }
+
+/* ==== Аура ==== */
+.egg-aura {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(156, 77, 204, 0.5) 0%, transparent 70%);
+  animation: auraPulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes auraPulse {
+  0%, 100% { transform: scale(1);    opacity: 0.6; }
+  50%      { transform: scale(1.15); opacity: 1;   }
+}
+
+/* ==== Яйцо ==== */
+.egg-3d {
+  position: relative;
+  background: radial-gradient(ellipse at 35% 30%, #9C4DCC 0%, #6A1B9A 60%, #4A0E6B 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  box-shadow:
+    inset -20px -25px 50px rgba(0, 0, 0, 0.5),
+    inset 15px 15px 40px rgba(255, 255, 255, 0.15),
+    0 0 60px rgba(156, 77, 204, 0.8),
+    0 15px 40px rgba(0, 0, 0, 0.5);
+  animation: eggFloat 3.5s ease-in-out infinite;
+  z-index: 2;
+}
+
+@keyframes eggFloat {
+  0%, 100% { transform: translateY(0)     rotate(-2deg); }
+  50%      { transform: translateY(-12px) rotate(2deg);  }
+}
+
+/* Цветовые варианты */
+.egg-hue-pink .egg-3d {
+  background: radial-gradient(ellipse at 35% 30%, #FF9FCB 0%, #D64D9C 60%, #8B1F62 100%);
+  box-shadow:
+    inset -20px -25px 50px rgba(0, 0, 0, 0.5),
+    inset 15px 15px 40px rgba(255, 255, 255, 0.15),
+    0 0 60px rgba(255, 128, 171, 0.8),
+    0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.egg-hue-cyan .egg-3d {
+  background: radial-gradient(ellipse at 35% 30%, #80E1F5 0%, #2EA6C9 60%, #0E5C78 100%);
+  box-shadow:
+    inset -20px -25px 50px rgba(0, 0, 0, 0.5),
+    inset 15px 15px 40px rgba(255, 255, 255, 0.15),
+    0 0 60px rgba(79, 195, 247, 0.8),
+    0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ==== Пятна ==== */
+.egg-spots {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image:
+    radial-gradient(circle 14px at 30% 40%, rgba(255, 128, 171, 0.7), transparent),
+    radial-gradient(circle 10px at 65% 25%, rgba(255, 128, 171, 0.5), transparent),
+    radial-gradient(circle 16px at 55% 70%, rgba(255, 128, 171, 0.6), transparent),
+    radial-gradient(circle 8px  at 75% 55%, rgba(255, 128, 171, 0.5), transparent),
+    radial-gradient(circle 12px at 25% 75%, rgba(255, 128, 171, 0.55), transparent);
+  filter: blur(0.5px);
+}
+
+/* ==== Блик ==== */
+.egg-shine {
+  position: absolute;
+  top: 18%;
+  left: 22%;
+  width: 40px;
+  height: 60px;
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.7) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(3px);
+  transform: rotate(-20deg);
+  pointer-events: none;
+}
+
+/* ==== Анимация вылупления ==== */
+.egg-scene.hatching .egg-3d {
+  animation: eggHatch 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes eggHatch {
+  0%   { transform: scale(1)    rotate(0);   }
+  20%  { transform: scale(1.08) rotate(-5deg); }
+  40%  { transform: scale(1.10) rotate(5deg);  }
+  60%  { transform: scale(1.15) rotate(-8deg); }
+  100% { transform: scale(1.4)  rotate(0);   opacity: 0; filter: brightness(3); }
+}
+
+/* ==== Частицы ==== */
+.egg-particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FF9F43 30%, transparent 70%);
+  box-shadow: 0 0 12px rgba(255, 159, 67, 0.9);
+  pointer-events: none;
+}
+
+.egg-particle.p1 { top: 20%;    left: 10%;  animation: orbit 4s   linear infinite; }
+.egg-particle.p2 { top: 70%;    right: 10%; animation: orbit 5s   linear infinite reverse; }
+.egg-particle.p3 { top: 15%;    right: 20%; animation: orbit 6s   linear infinite; }
+.egg-particle.p4 { bottom: 20%; left: 15%;  animation: orbit 4.5s linear infinite reverse; }
+.egg-particle.p5 { top: 50%;    left: 5%;   animation: orbit 7s   linear infinite; }
+
+@keyframes orbit {
+  0%   { transform: rotate(0)      translateX(20px) rotate(0);      }
+  100% { transform: rotate(360deg) translateX(20px) rotate(-360deg); }
+}
+
+/* ==== Звёзды ==== */
+.egg-star {
+  position: absolute;
+  color: #FFE082;
+  font-size: 18px;
+  text-shadow: 0 0 12px rgba(255, 224, 130, 0.9);
+  pointer-events: none;
+}
+
+.egg-star.s1 { top: 10%;    right: 15%; animation: twinkle 2s   ease-in-out infinite;      }
+.egg-star.s2 { bottom: 25%; right: 5%;  animation: twinkle 2.5s ease-in-out infinite 0.5s; }
+.egg-star.s3 { top: 30%;    left: 8%;   animation: twinkle 3s   ease-in-out infinite 1s;   }
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50%      { opacity: 1;   transform: scale(1.2); }
+}

@@ -1,0 +1,315 @@
+.settings-screen { padding: 16px 20px 100px; gap: 14px; }
+
+.settings-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-topbar .title-glow { font-size: 20px; }
+
+/* ==== Секция ==== */
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(43, 15, 76, 0.6);
+  border: 1px solid rgba(156, 77, 204, 0.3);
+  border-radius: var(--radius-md);
+}
+
+.settings-section-title {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(156, 77, 204, 0.3);
+}
+
+/* ==== Строка ==== */
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.settings-row-info { flex: 1; }
+
+.settings-row-label {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+.settings-row-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* ==== Toggle ==== */
+.toggle-btn {
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-family: inherit;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid;
+  min-width: 70px;
+}
+
+.toggle-btn.on {
+  background: linear-gradient(135deg, #76FF03, #4CB800);
+  color: #1A0B2E;
+  border-color: #76FF03;
+  box-shadow: 0 0 20px rgba(118, 255, 3, 0.5);
+}
+
+.toggle-btn.off {
+  background: rgba(100, 100, 100, 0.3);
+  color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ==== Слайдер ==== */
+.settings-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(156, 77, 204, 0.2);
+}
+
+.settings-slider-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 100px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 12px #fff;
+}
+
+.slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 12px #fff;
+}
+
+/* ==== Кнопка действия ==== */
+.settings-action-btn {
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.settings-action-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.settings-action-btn.danger {
+  color: #FF6B6B;
+  border-color: rgba(255, 107, 107, 0.5);
+}
+
+.settings-action-btn.danger:hover {
+  background: rgba(255, 107, 107, 0.15);
+  border-color: #FF6B6B;
+}
+
+.settings-hint {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+/* ==== Инфо ==== */
+.settings-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.settings-info-row span:first-child { color: var(--text-dim); }
+.settings-info-row span:last-child { color: #fff; font-weight: 700; }
+
+/* ==== Секция поддержки ==== */
+.settings-section-support {
+  background: linear-gradient(160deg, rgba(255, 128, 171, 0.15), rgba(43, 15, 76, 0.95));
+  border: 2px solid rgba(255, 128, 171, 0.5);
+  box-shadow: 0 0 30px rgba(255, 128, 171, 0.2);
+}
+
+.settings-section-support .settings-section-title {
+  color: #FF80AB;
+  border-bottom-color: rgba(255, 128, 171, 0.4);
+  text-shadow: 0 0 10px rgba(255, 128, 171, 0.5);
+}
+
+.support-text {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+}
+
+.support-phone {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 128, 171, 0.3);
+  text-align: center;
+}
+
+.support-phone-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.support-phone-number {
+  font-size: 18px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.support-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  background: linear-gradient(135deg, #FF80AB, #FF6B6B);
+  border: none;
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-family: inherit;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 6px 0 #B14B2A, 0 0 25px rgba(255, 107, 107, 0.5);
+}
+
+.support-btn:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 0 #B14B2A, 0 0 40px rgba(255, 107, 107, 0.8);
+}
+
+.support-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #B14B2A, 0 0 25px rgba(255, 107, 107, 0.5);
+}
+
+.support-btn-icon { font-size: 20px; }
+.support-btn-text { font-size: 13px; }
+
+.support-hint {
+  font-size: 10px;
+  color: var(--text-dim);
+  text-align: center;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+  opacity: 0.7;
+}
+.support-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* ==== Кнопки поддержки ==== */
+.support-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* Копирование номера — голубая */
+.support-btn-copy {
+  background: linear-gradient(135deg, #4FC3F7, #29B6F6);
+  color: #fff;
+  box-shadow: 0 6px 0 #1A6B99, 0 0 25px rgba(79, 195, 247, 0.5);
+}
+
+.support-btn-copy:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 0 #1A6B99, 0 0 40px rgba(79, 195, 247, 0.8);
+}
+
+/* СБП-перевод — золотая (главная) */
+.support-btn-sbp {
+  background: linear-gradient(135deg, #FFE082, #FF9F43);
+  color: #2B0F4C;
+  box-shadow: 0 6px 0 #B14B2A, 0 0 30px rgba(255, 159, 67, 0.6);
+  animation: sbpPulse 2.5s ease-in-out infinite;
+}
+
+.support-btn-sbp:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 0 #B14B2A, 0 0 45px rgba(255, 159, 67, 0.9);
+}
+
+@keyframes sbpPulse {
+  0%, 100% { box-shadow: 0 6px 0 #B14B2A, 0 0 25px rgba(255, 159, 67, 0.5); }
+  50%      { box-shadow: 0 6px 0 #B14B2A, 0 0 40px rgba(255, 159, 67, 0.8); }
+}

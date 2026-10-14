@@ -1,0 +1,94 @@
+.pet-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(160deg, rgba(106, 27, 154, 0.7) 0%, rgba(43, 15, 76, 0.9) 100%);
+  border: 2px solid rgba(156, 77, 204, 0.5);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.pet-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(156, 77, 204, 0.5), 0 0 30px rgba(156, 77, 204, 0.4);
+}
+
+.pet-card:active { transform: scale(0.97); }
+
+.pet-card.rarity-1 { border-color: rgba(255, 255, 255, 0.3); }
+.pet-card.rarity-2 { border-color: rgba(165, 243, 208, 0.7); box-shadow: 0 0 20px rgba(165, 243, 208, 0.25); }
+.pet-card.rarity-3 { border-color: rgba(79, 195, 247, 0.8);  box-shadow: 0 0 25px rgba(79, 195, 247, 0.35); }
+.pet-card.rarity-4 { border-color: rgba(179, 157, 219, 0.9); box-shadow: 0 0 30px rgba(179, 157, 219, 0.45); }
+.pet-card.rarity-5 { border-color: rgba(255, 224, 130, 1);   box-shadow: 0 0 40px rgba(255, 224, 130, 0.55); }
+
+.pet-card-bg-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0.15;
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+.pet-card-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.pet-card-emoji {
+  font-size: 56px;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
+  animation: petCardFloat 3s ease-in-out infinite;
+}
+
+@keyframes petCardFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.pet-card-name {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.pet-card-stage {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.pet-card-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 100px;
+  margin-top: 4px;
+}
+
+.pet-card-level {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--cyan);
+}
+
+.pet-card-rarity {
+  font-size: 12px;
+  color: #FFE082;
+}

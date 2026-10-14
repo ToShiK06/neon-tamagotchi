@@ -1,0 +1,154 @@
+.my-pets-screen {
+  padding: 24px 20px 100px;
+  gap: 16px;
+}
+
+.my-pets-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.title-glow {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #C9B8E0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 15px rgba(156, 77, 204, 0.6));
+}
+
+.my-pets-count {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.pets-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+/* Пустое состояние */
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.empty-emoji {
+  font-size: 72px;
+  animation: eggFloat 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 25px rgba(156, 77, 204, 0.8));
+}
+
+.empty-state p {
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+/* Карточка "+" */
+.add-pet-card {
+  aspect-ratio: 1 / 1;
+  background: rgba(106, 27, 154, 0.25);
+  border: 2px dashed rgba(156, 77, 204, 0.6);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  color: var(--purple-light);
+}
+
+.add-pet-card:hover {
+  background: rgba(106, 27, 154, 0.4);
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.add-pet-card:active { transform: scale(0.96); }
+
+.add-pet-icon { font-size: 48px; font-weight: 300; line-height: 1; }
+.add-pet-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+/* ==== Секция яиц ==== */
+.eggs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(156, 77, 204, 0.3);
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+}
+
+.eggs-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 8px;
+}
+
+.egg-timer-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 6px;
+  background: linear-gradient(160deg, rgba(106, 27, 154, 0.4), rgba(43, 15, 76, 0.9));
+  border: 2px solid;
+  border-radius: var(--radius-sm);
+}
+
+.egg-timer-emoji {
+  font-size: 36px;
+  animation: eggWobble 2.5s ease-in-out infinite;
+}
+@keyframes eggWobble {
+  0%, 100% { transform: rotate(-6deg); }
+  50%      { transform: rotate(6deg); }
+}
+
+.egg-timer-stars { font-size: 11px; letter-spacing: 1px; }
+
+.egg-timer-time {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--cyan);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.5px;
+}
+
+.egg-timer-ready {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--neon-green);
+  text-shadow: 0 0 10px rgba(118, 255, 3, 0.7);
+  animation: readyPulse 1s ease-in-out infinite;
+}
+@keyframes readyPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.1); }
+}

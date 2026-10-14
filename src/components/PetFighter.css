@@ -1,0 +1,111 @@
+.fighter-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.side-left  { transform-origin: center bottom; }
+.side-right { transform-origin: center bottom; }
+
+.fighter {
+  position: relative;
+  font-size: 64px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.fighter-emoji { display: block; }
+
+/* ==== Idle: спокойное парение ==== */
+.fighter-idle {
+  animation: fighterIdle 2.4s ease-in-out infinite;
+}
+@keyframes fighterIdle {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-6px) rotate(2deg); }
+}
+
+/* ==== Attack: рывок вперёд ==== */
+.side-left .fighter-attack {
+  animation: attackLeft 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.side-right .fighter-attack {
+  animation: attackRight 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes attackLeft {
+  0%   { transform: translateX(0) scale(1); }
+  40%  { transform: translateX(30px) scale(1.15); }
+  100% { transform: translateX(0) scale(1); }
+}
+@keyframes attackRight {
+  0%   { transform: translateX(0) scale(1); }
+  40%  { transform: translateX(-30px) scale(1.15); }
+  100% { transform: translateX(0) scale(1); }
+}
+
+/* ==== Impact: световая вспышка в момент удара ==== */
+.fighter-impact {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 60%);
+  animation: impactFlash 0.35s ease-out;
+  pointer-events: none;
+}
+
+@keyframes impactFlash {
+  0%   { opacity: 1; transform: scale(0.5); }
+  100% { opacity: 0; transform: scale(1.8); }
+}
+
+/* ==== Hit: тряска и красная вспышка ==== */
+.side-left .fighter-hit {
+  animation: hitShake 0.3s ease-out;
+}
+.side-right .fighter-hit {
+  animation: hitShake 0.3s ease-out;
+}
+
+@keyframes hitShake {
+  0%   { transform: translateX(0)    rotate(0); }
+  20%  { transform: translateX(-8px) rotate(-6deg); }
+  40%  { transform: translateX(8px)  rotate(6deg); }
+  60%  { transform: translateX(-5px) rotate(-3deg); }
+  80%  { transform: translateX(5px)  rotate(3deg); }
+  100% { transform: translateX(0)    rotate(0); }
+}
+
+.fighter-flash {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 60, 60, 0.8) 0%, transparent 70%);
+  animation: hitFlash 0.3s ease-out;
+  pointer-events: none;
+}
+
+@keyframes hitFlash {
+  0%   { opacity: 1; transform: scale(0.8); }
+  100% { opacity: 0; transform: scale(1.4); }
+}
+
+/* ==== Victory / Defeated ==== */
+.fighter-victory {
+  animation: victoryBounce 0.6s ease-out infinite;
+}
+@keyframes victoryBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-16px) scale(1.1); }
+}
+
+.fighter-defeated {
+  animation: defeatedFall 0.8s ease-out forwards;
+}
+@keyframes defeatedFall {
+  0%   { transform: rotate(0) translateY(0); opacity: 1; }
+  100% { transform: rotate(90deg) translateY(30px); opacity: 0.3; }
+}
