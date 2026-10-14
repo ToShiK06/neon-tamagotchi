@@ -24,13 +24,20 @@ function CatchGameScreen({ pet, activeSkin = 'default', onBack, onReward }) {
 
   // ==== Движение мышью/пальцем ====
   const handlePointerMove = (e) => {
-    if (gameState !== 'playing') return;
-    const rect = stageRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const percent = ((clientX - rect.left) / rect.width) * 100;
-    setPetX(Math.max(5, Math.min(95, percent)));
-  };
+  if (gameState !== 'playing') return;
+  const rect = stageRef.current?.getBoundingClientRect();
+  if (!rect) return;
+
+  // Предотвращаем скролл страницы на мобилке
+  if (e.cancelable) e.preventDefault();
+
+  const clientX = e.touches && e.touches.length > 0
+    ? e.touches[0].clientX
+    : e.clientX;
+
+  const percent = ((clientX - rect.left) / rect.width) * 100;
+  setPetX(Math.max(5, Math.min(95, percent)));
+};
 
   // ==== Управление стрелками ====
   useEffect(() => {
@@ -235,11 +242,12 @@ function CatchGameScreen({ pet, activeSkin = 'default', onBack, onReward }) {
       </div>
 
       <div
-        ref={stageRef}
-        className={`catch-stage ${gameState === 'playing' ? 'active' : ''}`}
-        onMouseMove={handlePointerMove}
-        onTouchMove={handlePointerMove}
-      >
+  ref={stageRef}
+  className={`catch-stage ${gameState === 'playing' ? 'active' : ''}`}
+  onMouseMove={handlePointerMove}
+  onTouchMove={handlePointerMove}
+  onTouchStart={handlePointerMove}
+>
         <div className="catch-bg-grass"></div>
         <div className="catch-bg-stars"></div>
 

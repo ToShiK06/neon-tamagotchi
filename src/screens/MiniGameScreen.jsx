@@ -1,9 +1,11 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import './MiniGameScreen.css';
 import NeonButton from '../components/NeonButton';
 import { BOARD_SIZE, CRYSTALS, generateBoard, findMatches } from '../data/minigame';
 
-function MiniGameScreen({ pet, onBack, onReward }) {
+const SWIPE_THRESHOLD = 20; // минимальное расстояние свайпа в пикселях
+
+function MiniGameScreen({ pet, activeSkin = 'default', onBack, onReward }) {
   const [board, setBoard] = useState(() => generateBoard());
   const [selected, setSelected] = useState(null);
   const [score, setScore] = useState(0);
@@ -11,34 +13,33 @@ function MiniGameScreen({ pet, onBack, onReward }) {
   const [animating, setAnimating] = useState(false);
   const [combo, setCombo] = useState(0);
   const [flashCells, setFlashCells] = useState(new Set());
+
+  const boardRef = useRef(null);
+  const touchStartRef = useRef(null);
   const cascadeRef = useRef(null);
 
-  // ==== Падение и каскад ====
+  // ==== Каскад ====
   const resolveCascades = useCallback((currentBoard, addedScore = 0, comboCount = 0) => {
     const matches = findMatches(currentBoard);
 
     if (matches.size === 0) {
-      // Конец каскада
       setBoard(currentBoard);
       setAnimating(false);
       if (comboCount >= 2) setCombo(comboCount);
       return;
     }
 
-    // Показываем вспышку
     setFlashCells(matches);
 
     setTimeout(() => {
       setFlashCells(new Set());
 
-      // Убираем
       const cleared = currentBoard.map((row) => row.slice());
       matches.forEach((key) => {
         const [mr, mc] = key.split(',').map(Number);
         cleared[mr][mc] = null;
       });
 
-      // Падение
       for (let col = 0; col < BOARD_SIZE; col++) {
         const values = [];
         for (let row = BOARD_SIZE - 1; row >= 0; row--) {
@@ -57,15 +58,39 @@ function MiniGameScreen({ pet, onBack, onReward }) {
       setBoard(cleared);
       setScore((s) => s + matches.size * 10 * comboBonus);
 
-      // Продолжаем каскад
       cascadeRef.current = setTimeout(() => {
         resolveCascades(cleared, newScore, comboCount + 1);
       }, 400);
     }, 350);
   }, []);
 
-  // ==== Клик по ячейке ====
-  const handleClick = useCallback((r, c) => {
+  // ==== Логика свапа ====
+  const trySwap = useCallback((from, to) => {
+    if (moves <= 0 || animating) return;
+
+    const dist = Math.abs(from.r - to.r) + Math.abs(from.c - to.c);
+    if (dist !== 1) return;
+
+    const swapped = board.map((row) => row.slice());
+    [swapped[from.r][from.c], swapped[to.r][to.c]] = [swapped[to.r][to.c], swapped[from.r][from.c]];
+
+    const matches = findMatches(swapped);
+    if (matches.size === 0) {
+      setSelected(null);
+      return;
+    }
+
+    setSelected(null);
+    setAnimating(true);
+    setBoard(swapped);
+    setMoves((m) => m - 1);
+    setCombo(0);
+
+    resolveCascades(swapped, 0, 0);
+  }, [board, moves, animating, resolveCascades]);
+
+  // ==== Тап (десктоп / первый тап на телефоне) ====
+  const handleCellClick = useCallback((r, c) => {
     if (moves <= 0 || animating) return;
 
     if (!selected) {
@@ -78,35 +103,75 @@ function MiniGameScreen({ pet, onBack, onReward }) {
       return;
     }
 
-    const dist = Math.abs(selected.r - r) + Math.abs(selected.c - c);
-    if (dist !== 1) {
-      setSelected({ r, c });
+    trySwap(selected, { r, c });
+  }, [selected, moves, animating, trySwap]);
+
+  // ==== Touch — свайп-управление ====
+  const handleTouchStart = useCallback((e, r, c) => {
+    if (moves <= 0 || animating) return;
+
+    const touch = e.touches[0];
+    touchStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+      r,
+      c,
+    };
+
+    // Также выделяем клетку для визуальной обратной связи
+    setSelected({ r, c });
+  }, [moves, animating]);
+
+  const handleTouchMove = useCallback((e) => {
+    if (!touchStartRef.current || moves <= 0 || animating) return;
+    if (!e.cancelable) return;
+
+    e.preventDefault();
+
+    const touch = e.touches[0];
+    const dx = touch.clientX - touchStartRef.current.x;
+    const dy = touch.clientY - touchStartRef.current.y;
+
+    // Определяем направление только если прошли порог
+    if (Math.abs(dx) < SWIPE_THRESHOLD && Math.abs(dy) < SWIPE_THRESHOLD) return;
+
+    const { r, c } = touchStartRef.current;
+
+    let targetR = r;
+    let targetC = c;
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      // Горизонтальный свайп
+      targetC = dx > 0 ? c + 1 : c - 1;
+    } else {
+      // Вертикальный свайп
+      targetR = dy > 0 ? r + 1 : r - 1;
+    }
+
+    // Проверка границ
+    if (targetR < 0 || targetR >= BOARD_SIZE || targetC < 0 || targetC >= BOARD_SIZE) {
+      touchStartRef.current = null;
       return;
     }
 
-    // Свап
-    const swapped = board.map((row) => row.slice());
-    [swapped[selected.r][selected.c], swapped[r][c]] = [swapped[r][c], swapped[selected.r][selected.c]];
+    // Делаем свап
+    trySwap({ r, c }, { r: targetR, c: targetC });
+    touchStartRef.current = null;
+  }, [moves, animating, trySwap]);
 
-    // Проверка, есть ли совпадения
-    const matches = findMatches(swapped);
-
-    if (matches.size === 0) {
-      // Свап неудачен — откат
-      setSelected(null);
-      return;
+  const handleTouchEnd = useCallback(() => {
+    // Если свайпа не было, а был простой тап — оставляем selected для второго тапа
+    // (это работает для десктопного сценария)
+    // Через 500мс сбрасываем если не было второго тапа
+    if (touchStartRef.current) {
+      setTimeout(() => {
+        if (touchStartRef.current) {
+          touchStartRef.current = null;
+          // Не сбрасываем selected — даём игроку сделать второй тап
+        }
+      }, 500);
     }
-
-    // Свап удачен — применяем
-    setSelected(null);
-    setAnimating(true);
-    setBoard(swapped);
-    setMoves((m) => m - 1);
-    setCombo(0);
-
-    // Запускаем каскад
-    resolveCascades(swapped, 0, 0);
-  }, [board, selected, moves, animating, resolveCascades]);
+  }, []);
 
   // Очистка таймеров
   useEffect(() => {
@@ -134,12 +199,17 @@ function MiniGameScreen({ pet, onBack, onReward }) {
 
       <div className="minigame-info">
         <span>Ходы: <strong>{moves}</strong></span>
-        {combo >= 2 && <span className="combo-badge">🔥 Комбо ×{combo}</span>}
-        <span>Питомец: <strong>{pet.name}</strong></span>
+        {combo >= 2 && <span className="combo-badge">🔥 ×{combo}</span>}
+        <span className="hint-swipe">👆 Свайп или тап</span>
       </div>
 
-      <div className="board-wrap">
-        <div className={`board ${animating ? 'board-animating' : ''}`}>
+      <div
+        ref={boardRef}
+        className={`board-wrap ${animating ? 'board-animating' : ''}`}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="board">
           {board.map((row, r) =>
             row.map((cell, c) => {
               const isSelected = selected?.r === r && selected?.c === c;
@@ -148,7 +218,8 @@ function MiniGameScreen({ pet, onBack, onReward }) {
                 <button
                   key={`${r}-${c}`}
                   className={`cell ${isSelected ? 'selected' : ''} ${isFlashing ? 'flashing' : ''}`}
-                  onClick={() => handleClick(r, c)}
+                  onClick={() => handleCellClick(r, c)}
+                  onTouchStart={(e) => handleTouchStart(e, r, c)}
                   disabled={moves <= 0 || animating}
                 >
                   <span className="cell-emoji">{cell?.emoji || '·'}</span>

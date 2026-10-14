@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './SettingsScreen.css';
-import { SUPPORT_PHONE, SUPPORT_PHONE_RAW, SUPPORT_BANK, SBP_URL } from '../data/support';
+import {
+  SUPPORT_PHONE,
+  SUPPORT_PHONE_RAW,
+  SUPPORT_BANK,
+  TBANK_DEEPLINK,
+  TBANK_WEB,
+} from '../data/support';
 
 function SettingsScreen({ music, sound, onBack, onResetProgress, pushToast }) {
+  const [showFallback, setShowFallback] = useState(false);
+
   const handleReset = () => {
     if (window.confirm('СБРОСИТЬ ВЕСЬ прогресс? Питомцы, монеты, скины — всё будет удалено.')) {
       if (onResetProgress) onResetProgress();
@@ -15,7 +23,7 @@ function SettingsScreen({ music, sound, onBack, onResetProgress, pushToast }) {
       pushToast({
         icon: '📋',
         title: 'Номер скопирован!',
-        desc: 'Вставь его в приложении своего банка',
+        desc: 'Открой свой банк → Перевод по СБП → Вставь номер',
         type: 'success',
       });
     } else {
@@ -28,14 +36,52 @@ function SettingsScreen({ music, sound, onBack, onResetProgress, pushToast }) {
     }
   };
 
+  // ==== Открытие перевода через СБП ====
   const handleOpenSbp = () => {
-    window.open(SBP_URL, '_blank');
-    pushToast({
-      icon: '💳',
-      title: 'Открываю перевод...',
-      desc: 'Форма СБП с готовым номером получателя',
-      type: 'info',
-    });
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // На телефоне — пробуем диплинк Т-Банка (открывает приложение)
+      pushToast({
+        icon: '💳',
+        title: 'Открываю банк...',
+        desc: 'Подтверди открытие приложения',
+        type: 'info',
+      });
+
+      // Пытаемся открыть диплинк
+      const tbankUrl = TBANK_DEEPLINK;
+      const fallbackUrl = TBANK_WEB;
+
+      // Открываем через location.href — так работает диплинк
+      try {
+        // Создаём невидимый iframe как fallback
+        const timeout = setTimeout(() => {
+          // Если приложение не открылось за 1.5 сек — открываем веб
+          window.open(fallbackUrl, '_blank');
+        }, 1500);
+
+        // Пробуем открыть приложение
+        window.location.href = tbankUrl;
+
+        // Если через 1.5 сек ничего не произошло — показываем fallback
+        setTimeout(() => {
+          clearTimeout(timeout);
+          setShowFallback(true);
+        }, 2000);
+      } catch (e) {
+        window.open(fallbackUrl, '_blank');
+      }
+    } else {
+      // На ПК — открываем веб-версию Т-Банка
+      window.open(TBANK_WEB, '_blank');
+      pushToast({
+        icon: '💻',
+        title: 'Открываю Т-Банк в браузере',
+        desc: 'Переведи вручную или используй телефон',
+        type: 'info',
+      });
+    }
   };
 
   return (
@@ -140,25 +186,45 @@ function SettingsScreen({ music, sound, onBack, onResetProgress, pushToast }) {
 
         <div className="support-actions">
           <button
+            className="support-btn support-btn-sbp"
+            onClick={handleOpenSbp}
+          >
+            <span className="support-btn-icon">💳</span>
+            <span className="support-btn-text">Открыть банк для перевода</span>
+          </button>
+
+          <button
             className="support-btn support-btn-copy"
             onClick={handleCopyPhone}
           >
             <span className="support-btn-icon">📋</span>
             <span className="support-btn-text">Скопировать номер</span>
           </button>
-
-          <button
-            className="support-btn support-btn-sbp"
-            onClick={handleOpenSbp}
-          >
-            <span className="support-btn-icon">💳</span>
-            <span className="support-btn-text">Перевести через СБП</span>
-          </button>
         </div>
 
+        {/* ==== Инструкция (раскрывается после клика) ==== */}
+        {showFallback && (
+          <div className="support-instruction">
+            <div className="support-instruction-title">📱 Как перевести вручную</div>
+            <ol className="support-instruction-list">
+              <li>Открой приложение <strong>своего банка</strong> (Сбер, Альфа, ВТБ, Т-Банк...)</li>
+              <li>Найди раздел <strong>«Переводы»</strong> → <strong>«По СБП»</strong> или <strong>«По номеру телефона»</strong></li>
+              <li>Вставь скопированный номер: <strong>{SUPPORT_PHONE}</strong></li>
+              <li>Выбери банк получателя: <strong>{SUPPORT_BANK}</strong></li>
+              <li>Введи сумму и подтверди</li>
+            </ol>
+            <button
+              className="support-instruction-close"
+              onClick={() => setShowFallback(false)}
+            >
+              Понятно
+            </button>
+          </div>
+        )}
+
         <div className="support-hint">
-          Нажми «Перевести через СБП» — откроется приложение банка с готовым
-          номером получателя. Или скопируй номер и вставь в своё приложение.
+          Перевод идёт через <strong>СБП</strong> — работает <strong>из любого банка</strong>.
+          Кнопка открывает приложение банка на телефоне.
         </div>
       </div>
     </div>

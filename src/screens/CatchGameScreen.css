@@ -278,3 +278,10 @@
   letter-spacing: 1px;
   padding: 6px;
 }
+.catch-stage {
+  /* ... было ... */
+  touch-action: none;              /* ⚠️ блокирует скролл при движении пальца по сцене */
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: contain;    /* не даёт странице прокручиваться */
+}

@@ -173,3 +173,34 @@
 
 .minigame-result p { font-size: 13px; color: var(--text-dim); }
 .minigame-result strong { color: #fff; font-size: 15px; }
+
+/* ==== Свайп-управление ==== */
+.board-wrap {
+  touch-action: none;              /* ⚠️ блокирует скролл страницы по доске */
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: contain;
+}
+
+.board {
+  touch-action: none;
+}
+
+.cell {
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Подсказка про свайп */
+.hint-swipe {
+  color: var(--text-dim);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+}
+
+@media (min-width: 901px) {
+  .hint-swipe {
+    /* На десктопе показываем нейтральную подсказку */
+  }
+}
