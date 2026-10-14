@@ -61,12 +61,8 @@ function SettingsScreen({ music, sound, onBack, onResetProgress, pushToast }) {
   });
 
   // Пытаемся открыть приложение через диплинк
-  const deeplink = TBANK_DEEPLINK;
-  const fallback = TBANK_WEB;
-
-  // Способ 1: location.href (работает в большинстве браузеров)
   try {
-    window.location.href = deeplink;
+    window.location.href = TBANK_DEEPLINK;
   } catch (e) {
     // ignore
   }
@@ -76,7 +72,7 @@ function SettingsScreen({ music, sound, onBack, onResetProgress, pushToast }) {
     try {
       const iframe = document.createElement('iframe');
       iframe.style.display = 'none';
-      iframe.src = deeplink;
+      iframe.src = TBANK_DEEPLINK;
       document.body.appendChild(iframe);
       setTimeout(() => document.body.removeChild(iframe), 500);
     } catch (e) {
@@ -84,7 +80,7 @@ function SettingsScreen({ music, sound, onBack, onResetProgress, pushToast }) {
     }
   }, 100);
 
-  // Через 2 секунды, если приложение не открылось — показываем инструкцию
+  // Через 2 секунды показываем инструкцию (если приложение не открылось)
   setTimeout(() => {
     setShowFallback(true);
   }, 2000);
