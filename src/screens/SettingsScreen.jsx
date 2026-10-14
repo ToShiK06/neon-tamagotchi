@@ -4,7 +4,7 @@ import {
   SUPPORT_PHONE,
   SUPPORT_PHONE_RAW,
   SUPPORT_BANK,
-  TBANK_DEEPLINK,
+  TBANK_DEEPLINKS,
   TBANK_WEB,
 } from '../data/support';
 
@@ -38,53 +38,65 @@ function SettingsScreen({ music, sound, onBack, onResetProgress, pushToast }) {
 
   // ==== Открытие перевода через СБП ====
   const handleOpenSbp = () => {
-  const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
-  if (!isMobile) {
-    // ПК — открываем веб-версию
-    window.open(TBANK_WEB, '_blank');
+    if (!isMobile) {
+      // ПК — открываем веб-версию
+      window.open(TBANK_WEB, '_blank');
+      pushToast({
+        icon: '💻',
+        title: 'Открываю Т-Банк в браузере',
+        desc: 'Или используй телефон для СБП-перевода',
+        type: 'info',
+      });
+      return;
+    }
+
+    // 📱 Телефон — пробуем нативный диплинк
     pushToast({
-      icon: '💻',
-      title: 'Открываю Т-Банк в браузере',
-      desc: 'Или используй телефон для СБП-перевода',
+      icon: '💳',
+      title: 'Открываю приложение...',
+      desc: 'Если не открылось — покажу инструкцию',
       type: 'info',
     });
-    return;
-  }
 
-  // 📱 Телефон — пробуем нативный диплинк
-  pushToast({
-    icon: '💳',
-    title: 'Открываю приложение...',
-    desc: 'Подтверди открытие в системном окне',
-    type: 'info',
-  });
+    // Функция-попытка открыть через скрытый iframe
+    const tryDeeplink = (url, timeout = 800) => {
+      return new Promise((resolve) => {
+        try {
+          const iframe = document.createElement('iframe');
+          iframe.style.display = 'none';
+          iframe.src = url;
+          document.body.appendChild(iframe);
 
-  // Пытаемся открыть приложение через диплинк
-  try {
-    window.location.href = TBANK_DEEPLINK;
-  } catch (e) {
-    // ignore
-  }
+          setTimeout(() => {
+            try {
+              document.body.removeChild(iframe);
+            } catch (e) {
+              // ignore
+            }
+            resolve();
+          }, timeout);
+        } catch (e) {
+          resolve();
+        }
+      });
+    };
 
-  // Способ 2: через iframe (для Safari)
-  setTimeout(() => {
-    try {
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = TBANK_DEEPLINK;
-      document.body.appendChild(iframe);
-      setTimeout(() => document.body.removeChild(iframe), 500);
-    } catch (e) {
-      // ignore
-    }
-  }, 100);
+    // Пробуем по очереди все схемы
+    const tryAllSchemes = async () => {
+      for (const scheme of TBANK_DEEPLINKS) {
+        await tryDeeplink(scheme);
+      }
 
-  // Через 2 секунды показываем инструкцию (если приложение не открылось)
-  setTimeout(() => {
-    setShowFallback(true);
-  }, 2000);
-};
+      // После всех попыток показываем fallback
+      setTimeout(() => {
+        setShowFallback(true);
+      }, 500);
+    };
+
+    tryAllSchemes();
+  };
 
   return (
     <div className="screen settings-screen">
@@ -226,7 +238,7 @@ function SettingsScreen({ music, sound, onBack, onResetProgress, pushToast }) {
 
         <div className="support-hint">
           Перевод идёт через <strong>СБП</strong> — работает <strong>из любого банка</strong>.
-          Кнопка открывает приложение банка на телефоне.
+          Кнопка пытается открыть приложение банка на телефоне.
         </div>
       </div>
     </div>

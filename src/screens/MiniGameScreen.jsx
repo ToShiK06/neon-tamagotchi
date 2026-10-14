@@ -123,41 +123,36 @@ function MiniGameScreen({ pet, activeSkin = 'default', onBack, onReward }) {
   }, [moves, animating]);
 
   const handleTouchMove = useCallback((e) => {
-    if (!touchStartRef.current || moves <= 0 || animating) return;
-    if (!e.cancelable) return;
+  if (!touchStartRef.current || moves <= 0 || animating) return;
 
-    e.preventDefault();
+  // НЕ вызываем preventDefault — он падает в passive listener.
+  // Скролл блокируется через CSS touch-action: none.
 
-    const touch = e.touches[0];
-    const dx = touch.clientX - touchStartRef.current.x;
-    const dy = touch.clientY - touchStartRef.current.y;
+  const touch = e.touches[0];
+  const dx = touch.clientX - touchStartRef.current.x;
+  const dy = touch.clientY - touchStartRef.current.y;
 
-    // Определяем направление только если прошли порог
-    if (Math.abs(dx) < SWIPE_THRESHOLD && Math.abs(dy) < SWIPE_THRESHOLD) return;
+  if (Math.abs(dx) < SWIPE_THRESHOLD && Math.abs(dy) < SWIPE_THRESHOLD) return;
 
-    const { r, c } = touchStartRef.current;
+  const { r, c } = touchStartRef.current;
 
-    let targetR = r;
-    let targetC = c;
+  let targetR = r;
+  let targetC = c;
 
-    if (Math.abs(dx) > Math.abs(dy)) {
-      // Горизонтальный свайп
-      targetC = dx > 0 ? c + 1 : c - 1;
-    } else {
-      // Вертикальный свайп
-      targetR = dy > 0 ? r + 1 : r - 1;
-    }
+  if (Math.abs(dx) > Math.abs(dy)) {
+    targetC = dx > 0 ? c + 1 : c - 1;
+  } else {
+    targetR = dy > 0 ? r + 1 : r - 1;
+  }
 
-    // Проверка границ
-    if (targetR < 0 || targetR >= BOARD_SIZE || targetC < 0 || targetC >= BOARD_SIZE) {
-      touchStartRef.current = null;
-      return;
-    }
-
-    // Делаем свап
-    trySwap({ r, c }, { r: targetR, c: targetC });
+  if (targetR < 0 || targetR >= BOARD_SIZE || targetC < 0 || targetC >= BOARD_SIZE) {
     touchStartRef.current = null;
-  }, [moves, animating, trySwap]);
+    return;
+  }
+
+  trySwap({ r, c }, { r: targetR, c: targetC });
+  touchStartRef.current = null;
+}, [moves, animating, trySwap]);
 
   const handleTouchEnd = useCallback(() => {
     // Если свайпа не было, а был простой тап — оставляем selected для второго тапа

@@ -28,8 +28,8 @@ function CatchGameScreen({ pet, activeSkin = 'default', onBack, onReward }) {
   const rect = stageRef.current?.getBoundingClientRect();
   if (!rect) return;
 
-  // Предотвращаем скролл страницы на мобилке
-  if (e.cancelable) e.preventDefault();
+  // НЕ вызываем preventDefault — он падает в passive listener.
+  // Скролл блокируется через CSS touch-action: none.
 
   const clientX = e.touches && e.touches.length > 0
     ? e.touches[0].clientX
