@@ -38,51 +38,57 @@ function SettingsScreen({ music, sound, onBack, onResetProgress, pushToast }) {
 
   // ==== Открытие перевода через СБП ====
   const handleOpenSbp = () => {
-    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
-    if (isMobile) {
-      // На телефоне — пробуем диплинк Т-Банка (открывает приложение)
-      pushToast({
-        icon: '💳',
-        title: 'Открываю банк...',
-        desc: 'Подтверди открытие приложения',
-        type: 'info',
-      });
+  if (!isMobile) {
+    // ПК — открываем веб-версию
+    window.open(TBANK_WEB, '_blank');
+    pushToast({
+      icon: '💻',
+      title: 'Открываю Т-Банк в браузере',
+      desc: 'Или используй телефон для СБП-перевода',
+      type: 'info',
+    });
+    return;
+  }
 
-      // Пытаемся открыть диплинк
-      const tbankUrl = TBANK_DEEPLINK;
-      const fallbackUrl = TBANK_WEB;
+  // 📱 Телефон — пробуем нативный диплинк
+  pushToast({
+    icon: '💳',
+    title: 'Открываю приложение...',
+    desc: 'Подтверди открытие в системном окне',
+    type: 'info',
+  });
 
-      // Открываем через location.href — так работает диплинк
-      try {
-        // Создаём невидимый iframe как fallback
-        const timeout = setTimeout(() => {
-          // Если приложение не открылось за 1.5 сек — открываем веб
-          window.open(fallbackUrl, '_blank');
-        }, 1500);
+  // Пытаемся открыть приложение через диплинк
+  const deeplink = TBANK_DEEPLINK;
+  const fallback = TBANK_WEB;
 
-        // Пробуем открыть приложение
-        window.location.href = tbankUrl;
+  // Способ 1: location.href (работает в большинстве браузеров)
+  try {
+    window.location.href = deeplink;
+  } catch (e) {
+    // ignore
+  }
 
-        // Если через 1.5 сек ничего не произошло — показываем fallback
-        setTimeout(() => {
-          clearTimeout(timeout);
-          setShowFallback(true);
-        }, 2000);
-      } catch (e) {
-        window.open(fallbackUrl, '_blank');
-      }
-    } else {
-      // На ПК — открываем веб-версию Т-Банка
-      window.open(TBANK_WEB, '_blank');
-      pushToast({
-        icon: '💻',
-        title: 'Открываю Т-Банк в браузере',
-        desc: 'Переведи вручную или используй телефон',
-        type: 'info',
-      });
+  // Способ 2: через iframe (для Safari)
+  setTimeout(() => {
+    try {
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = deeplink;
+      document.body.appendChild(iframe);
+      setTimeout(() => document.body.removeChild(iframe), 500);
+    } catch (e) {
+      // ignore
     }
-  };
+  }, 100);
+
+  // Через 2 секунды, если приложение не открылось — показываем инструкцию
+  setTimeout(() => {
+    setShowFallback(true);
+  }, 2000);
+};
 
   return (
     <div className="screen settings-screen">
